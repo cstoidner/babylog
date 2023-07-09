@@ -3,10 +3,12 @@
 
 #include <stdio.h>
 
-#define BABYLOG_BUFSIZE 256 /* plus trailing zero */ +1
-#define BABYLOG_HAVE_IMPLEMENTATION
+#define BABYLOG_BUFSIZE 256+1 /* 256 characters plus trailing zero */
+#define BABYLOG_HAVE_IMPLEMENTATION /* exctaly one c-file has accept babylog's implementation */
 
 #include "babylog.h"
+
+void foo(); /* prototype from other test-c-file */
 
 int main()
 {
@@ -14,17 +16,17 @@ int main()
 
     printf("*** Creating some basic log messages...\n");
 
-	babylog_printf("That is the 1st constant log message\n");
+    babylog_printf("That is the 1st constant log message\n");
     babylog_printf("That is the 2nd constant log message\n");
-    babylog_printf("Some %s log message\n", "formatted");
     babylog_printf("Some log with numbers hex(%x) dec(%d)\n", 0xdeadbeef, 42);
     babylog_printf("a message-");
-    babylog_printf("-consisting-");
     babylog_printf("-of-");
-    babylog_printf("%d segments\n", 4);
+    babylog_printf("%d segments\n", 3);
 
-	printf("Entire Log Buffer:\n");
-	printf("--- start ---\n");
+    foo(); /* other c-file's c-function that generates also some log messages */
+
+    printf("Entire Log Buffer:\n");
+    printf("--- start ---\n");
     printf("%s", babylog_getLog());
     printf("--- end ---\n");
     printf("Log Status: %d\n", babylog_getStatus());
